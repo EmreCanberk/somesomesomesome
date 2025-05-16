@@ -241,13 +241,13 @@
             const warningText = document.getElementById("warningText");
 
             if (!place || !date) {
-                warningText.innerText = "Tarih ve mekan seçmeden gitmek yok GÜZELLİK 😅 Lütfen doldur.";
+                warningText.innerText = "Tarih ve mekan seçmeden gitmek yok GÜZELLİK.";
                 return;
             }
 
             warningText.innerText = "DOLDURULDU! 💌"; 
 
-            const message = `💌 Selam! Hadi bir buluşma yapalım:\n📍 Mekan: ${place}\n📅 Tarih: ${date}\nBekliyorum! 😍`;
+            const message = ` Selam! Hadi bir buluşma yapalım:\n Mekan: ${place}\n Tarih: ${date}\nBekliyorum! `;
             const encodedMessage = encodeURIComponent(message);
             window.location = `https://wa.me/905516305001?text=${encodedMessage}`;
         });
