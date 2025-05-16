@@ -108,6 +108,12 @@
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
 
+        #warningText {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
         #hearts-container {
             position: fixed;
             top: 0;
@@ -175,10 +181,11 @@
     </div>
 
     <div class="confirmation" id="confirmBox">
-        <h1>Yayyyyyyyy!!! Let’s pick a time & place 💖</h1>
+        <h1 id="romanticLine">Hazır mısın? 💌</h1>
         <div class="fix-gifimg"></div>
         <input type="text" id="place" placeholder="📍 Mekan">
         <input type="date" id="date">
+        <p id="warningText"></p>
         <button class="answer" id="fix">Gönder 💌</button>
     </div>
 
@@ -194,6 +201,16 @@
             askBox.style.display = "none";
             confirmBox.style.display = "block";
             startHeartRain();
+
+            const messages = [
+                "Bu tarihi sen mi belirlemek istersin, yoksa bana bırakayım mı? 😏💫",
+                "Mekanı da ben mi bulayım, yoksa senin gizli planların mı var? 😜",
+                "İkimizin günü olsun… Yeri ve zamanı seç, gerisi bende 💐",
+                "Tarihi seç, kalbimi kazandın zaten 💖",
+                "Birlikte karar verelim mi? Çünkü her şey seninle güzel 🌸"
+            ];
+            document.getElementById("romanticLine").innerText =
+                messages[Math.floor(Math.random() * messages.length)];
         });
 
         no.addEventListener("click", () => {
@@ -221,11 +238,14 @@
         document.getElementById("fix").addEventListener("click", () => {
             const place = document.getElementById("place").value.trim();
             const date = document.getElementById("date").value;
+            const warningText = document.getElementById("warningText");
 
             if (!place || !date) {
-                alert("Ebene Atlarım Yarın 09.00 saatlerinde");
+                warningText.innerText = "Tarih ve mekan seçmeden gitmek yok GÜZELLİK 😅 Lütfen doldur.";
                 return;
             }
+
+            warningText.innerText = "DOLDURULDU! 💌"; 
 
             const message = `💌 Selam! Hadi bir buluşma yapalım:\n📍 Mekan: ${place}\n📅 Tarih: ${date}\nBekliyorum! 😍`;
             const encodedMessage = encodeURIComponent(message);
