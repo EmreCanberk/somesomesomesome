@@ -97,7 +97,9 @@
         }
 
         input[type="text"],
-        input[type="date"] {
+        input[type="date"],
+        input[type="time"],
+        select {
             padding: 10px;
             border-radius: 10px;
             border: none;
@@ -112,6 +114,7 @@
             color: red;
             font-size: 16px;
             margin-top: 10px;
+            animation: fadeIn 0.4s ease-in-out;
         }
 
         #hearts-container {
@@ -146,24 +149,15 @@
             }
         }
 
-        @media screen and (max-width: 600px) {
-
-            .container,
-            .confirmation {
-                width: 95%;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
             }
 
-            h1 {
-                font-size: 22px;
-            }
-
-            .answer {
-                font-size: 16px;
-            }
-
-            .gifimg,
-            .fix-gifimg {
-                height: 160px;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     </style>
@@ -183,8 +177,26 @@
     <div class="confirmation" id="confirmBox">
         <h1 id="romanticLine">Hazır mısın? 💌</h1>
         <div class="fix-gifimg"></div>
-        <input type="text" id="place" placeholder="📍 Mekan">
+
+        <select id="presetPlace">
+            <option value="">📍 Hazır Mekan Seç</option>
+            <option value="Starbucks">Starbucks</option>
+            <option value="Kafemoda">Kafemoda</option>
+            <option value="Sahil Kafesi">Sahil Kafesi</option>
+            <option value="Evde Netflix & Chill 🍕">Evde Netflix & Chill 🍕</option>
+        </select>
+
+        <input type="text" id="place" placeholder="📍 Veya kendi mekanını yaz">
         <input type="date" id="date">
+
+        <select id="presetTime">
+            <option value="">🕒 Hazır Saat Seç</option>
+            <option value="15:00">15:00</option>
+            <option value="18:00">18:00</option>
+            <option value="21:00">21:00</option>
+        </select>
+
+        <input type="time" id="time">
         <p id="warningText"></p>
         <button class="answer" id="fix">Gönder 💌</button>
     </div>
@@ -236,20 +248,31 @@
         }
 
         document.getElementById("fix").addEventListener("click", () => {
-            const place = document.getElementById("place").value.trim();
+            const placeInput = document.getElementById("place").value.trim();
+            const placeSelect = document.getElementById("presetPlace").value.trim();
+            const timeInput = document.getElementById("time").value.trim();
+            const timeSelect = document.getElementById("presetTime").value.trim();
             const date = document.getElementById("date").value;
             const warningText = document.getElementById("warningText");
 
-             if (!place || !date) {
-        warningText.innerText = "Tarih ve mekan seçmeden gitmek yok Güzellik. 😅";
-        return;
-      }
+            if ((placeInput && placeSelect) || (timeInput && timeSelect)) {
+                warningText.innerText = "Ya hazır seçeneklerden birini seç ya da kendi yaz, ikisini birden doldurma 😅";
+                return;
+            }
 
-      warningText.innerText = " DOLDURULDU! 💌 "; 
+            const place = placeInput || placeSelect;
+            const time = timeInput || timeSelect;
 
-      const message = `💌 Selam! Hadi bir buluşma yapalım:\n📍 Mekan: ${place}\n📅 Tarih: ${date}\nBekliyorum! 😍`;
-      const encodedMessage = encodeURIComponent(message);
-      window.location = `https://wa.me/905516305001?text=${encodedMessage}`;
+            if (!place || !date || !time) {
+                warningText.innerText = "Tarih, saat ve mekan seçmeden gitmek yok Güzellik.";
+                return;
+            }
+
+            warningText.innerText = "";
+
+            const message = `💌 Selam! Hadi bir buluşma yapalım:\n📍 Mekan: ${place}\n📅 Tarih: ${date}\n🕒 Saat: ${time}\nBekliyorum! 😍`;
+            const encodedMessage = encodeURIComponent(message);
+            window.location = `https://wa.me/905516305001?text=${encodedMessage}`;
         });
     </script>
 
